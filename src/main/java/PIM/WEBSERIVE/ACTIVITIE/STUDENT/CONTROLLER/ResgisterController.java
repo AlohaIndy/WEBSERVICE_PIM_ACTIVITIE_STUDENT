@@ -46,7 +46,7 @@ public class ResgisterController {
 	@RequestMapping(method = RequestMethod.GET, value = "test")
 	public void test() {
 
-		String personId = "5852100080"; // คิดจะเปลี่ยนเป็นใช้ string
+		String personId = "5852100080"; 
 		String accounttypeName = "นักเรียน";
 		String personGender = "ชาย";
 		String personNameFirst = "นักเรียนดี";
