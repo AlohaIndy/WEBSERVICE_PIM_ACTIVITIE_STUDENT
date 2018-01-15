@@ -1,5 +1,7 @@
 package PIM.WEBSERIVE.ACTIVITIE.STUDENT.CONTROLLER;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import PIM.WEBSERIVE.ACTIVITIE.STUDENT.ENTITY.Faculty;
 import PIM.WEBSERIVE.ACTIVITIE.STUDENT.ENTITY.Major;
+import PIM.WEBSERIVE.ACTIVITIE.STUDENT.ENTITY.Person;
 import PIM.WEBSERIVE.ACTIVITIE.STUDENT.SERVICE.AccountService;
 import PIM.WEBSERIVE.ACTIVITIE.STUDENT.SERVICE.AccounttypeService;
 import PIM.WEBSERIVE.ACTIVITIE.STUDENT.SERVICE.FacultyService;
@@ -31,17 +34,14 @@ public class Test {
 	PersonService personService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public Major GetTest() {
+	public void GetTest() {
+		String personId = "5852100003"; 
+		System.out.println("AccountRegister"+personId);
+		List<Person> person=personService.findByPersonIdGetList(personId);
+		if (person.isEmpty()) {
+			System.out.println("null");
+		}
 		
-		facultyService.findAll();
-
-		String majorName = "สาขาวิศวกรรมการผลิตยานยนต์";
-
-		Major major = majorService.findByMajorName(majorName);
-		
-		System.out.println("faculty : "+major.getFaculty().getFacultyId());
-		
-		return major;
 	}
 
 }

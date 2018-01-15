@@ -4,8 +4,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,45 +43,16 @@ public class ResgisterController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public Iterable<Major> GetRegister() {
+		System.out.println("GetRegister");
 		facultyService.findAll();
+		System.out.println("GetRegister=finish");
 		return majorService.findAll();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "test")
-	public Account test() {
-		facultyService.findAll();
-		String personId = "5852100103"; 
-		String accounttypeName = "นักเรียน";
-		String personGender = "ชาย";
-		String personNameFirst = "นักเรียนดี";
-		String personNameLast = "ทดสอบ";
-		String personBirthdate = "21/02/2539 0:0:0";
-		String majorName = "สาขาวิศวกรรมการผลิตยานยนต์";
-		String accountUsername = "test103";
-		String accountPassword = "test1";
-		Major major = majorService.findByMajorName(majorName);
-		Accounttype accounttype = accounttypeService.findByAccounttypeName(accounttypeName);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		Date date = new Date();
-		Date nowDate = Calendar.getInstance().getTime();
-		try {
-			date = dateFormat.parse(personBirthdate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		Person newPerson = personService
-				.save(new Person(personId, major, personGender, personNameFirst, personNameLast, date, nowDate));
-		Account newAccount = new Account(accounttype, newPerson, accountUsername, accountPassword, nowDate);
-		System.out.println("finish");
-		return accountService.save(newAccount);
-	}
-
 	@RequestMapping(method = RequestMethod.POST)
-	public Account PostRegister(@RequestBody Account account) {
-		System.out.println("AccountRegister");
-		facultyService.findAll();
+	public ResponseEntity<Account> PostRegister(@RequestBody Account account) {
 		String personId = account.getPerson().getPersonId(); 
-		String accounttypeName = account.getAccounttype().getAccounttypeName();
+		String accounttypeName = "นักเรียน";
 		String personGender = account.getPerson().getPersonGender();
 		String personNameFirst = account.getPerson().getPersonNameFirst();
 		String personNameLast = account.getPerson().getPersonNameLast();
@@ -86,14 +60,20 @@ public class ResgisterController {
 		String majorName = account.getPerson().getMajor().getMajorName();
 		String accountUsername = account.getAccountUsername();
 		String accountPassword = account.getAccountPassword();
-		Major major = majorService.findByMajorName(majorName);
-		Accounttype accounttype = accounttypeService.findByAccounttypeName(accounttypeName);
 		Date nowDate = Calendar.getInstance().getTime();
-		Person newPerson = personService
-				.save(new Person(personId, major, personGender, personNameFirst, personNameLast, personBirthdate, nowDate));
-		Account newAccount = new Account(accounttype, newPerson, accountUsername, accountPassword, nowDate);
-		System.out.println("finish");
-		return accountService.save(newAccount);
+		System.out.println("AccountRegister"+personId);
+		List<Person> checkPersons=personService.findByPersonIdGetList(personId);
+		if (checkPersons.isEmpty()) {
+			facultyService.findAll();
+			Major major = majorService.findByMajorName(majorName);
+			Accounttype accounttype = accounttypeService.findByAccounttypeName(accounttypeName);
+			Person newPerson = personService
+					.save(new Person(personId, major, personGender, personNameFirst, personNameLast, personBirthdate, nowDate));
+			Account newAccount = new Account(accounttype, newPerson, accountUsername, accountPassword, nowDate);
+			return new ResponseEntity<Account>(accountService.save(newAccount),HttpStatus.OK);	
+		}
+		
+		return new ResponseEntity<>(HttpStatus.CONFLICT);
 	}
 
 }

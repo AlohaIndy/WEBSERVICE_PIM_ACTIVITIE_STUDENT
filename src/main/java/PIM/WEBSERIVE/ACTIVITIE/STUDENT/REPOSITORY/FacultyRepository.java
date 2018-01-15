@@ -1,11 +1,11 @@
-package PIM.WEBSERIVE.ACTIVITIE.STUDENT.DAO;
+package PIM.WEBSERIVE.ACTIVITIE.STUDENT.REPOSITORY;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import PIM.WEBSERIVE.ACTIVITIE.STUDENT.ENTITY.Faculty;
 
-public interface FacultyDAO extends JpaRepository<Faculty, Integer> {
+public interface FacultyRepository extends JpaRepository<Faculty, Integer> {
 
 	@Query(value = "SELECT * FROM `faculty` WHERE faculty_id = ?1", nativeQuery = true)
 	public Faculty findByFacultyId(Integer facultyId);
