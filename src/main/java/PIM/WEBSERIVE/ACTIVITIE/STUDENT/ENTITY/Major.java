@@ -29,7 +29,6 @@ public class Major implements java.io.Serializable {
 	private Integer majorId;
 	private Faculty faculty;
 	private String majorName;
-	@JsonIgnore
 	private Date majorCreateDate;
 	@JsonIgnore
 	private Set<Person> persons = new HashSet<Person>(0);

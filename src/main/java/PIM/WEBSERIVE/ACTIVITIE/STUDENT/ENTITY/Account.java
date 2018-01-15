@@ -1,7 +1,6 @@
 package PIM.WEBSERIVE.ACTIVITIE.STUDENT.ENTITY;
 // default package
-
-// Generated 14 �.�. 2561, 12:11:19 by Hibernate Tools 4.3.5.Final
+// Generated 15 �.�. 2561, 22:08:47 by Hibernate Tools 4.3.5.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -32,9 +31,9 @@ public class Account implements java.io.Serializable {
 	private Integer accountId;
 	private Accounttype accounttype;
 	private Person person;
-	@JsonIgnore
+//	@JsonIgnore
 	private String accountUsername;
-	@JsonIgnore
+//	@JsonIgnore
 	private String accountPassword;
 	@JsonIgnore
 	private Date accountCreateDate;

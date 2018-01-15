@@ -26,7 +26,6 @@ public class Faculty implements java.io.Serializable {
 
 	private Integer facultyId;
 	private String facultyName;
-	@JsonIgnore
 	private Date facultyCreateDate;
 	@JsonIgnore
 	private Set<Major> majors = new HashSet<Major>(0);

@@ -20,4 +20,12 @@ public class FacultyService {
 		return facultyDAO.findAll();
 	}
 	
+	public Faculty findByFacultyId(Integer facultyId) {
+		return facultyDAO.findByFacultyId(facultyId);
+	}
+	
+	public Faculty findByFacultyName(String facultyName) {
+		return facultyDAO.findByFacultyName(facultyName);
+	}
+	
 }

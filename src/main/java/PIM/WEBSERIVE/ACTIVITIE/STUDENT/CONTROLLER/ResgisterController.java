@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,16 +45,16 @@ public class ResgisterController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "test")
-	public void test() {
-
-		String personId = "5852100080"; 
+	public Account test() {
+		facultyService.findAll();
+		String personId = "5852100103"; 
 		String accounttypeName = "นักเรียน";
 		String personGender = "ชาย";
 		String personNameFirst = "นักเรียนดี";
 		String personNameLast = "ทดสอบ";
 		String personBirthdate = "21/02/2539 0:0:0";
 		String majorName = "สาขาวิศวกรรมการผลิตยานยนต์";
-		String accountUsername = "test1";
+		String accountUsername = "test103";
 		String accountPassword = "test1";
 		Major major = majorService.findByMajorName(majorName);
 		Accounttype accounttype = accounttypeService.findByAccounttypeName(accounttypeName);
@@ -68,13 +69,31 @@ public class ResgisterController {
 		Person newPerson = personService
 				.save(new Person(personId, major, personGender, personNameFirst, personNameLast, date, nowDate));
 		Account newAccount = new Account(accounttype, newPerson, accountUsername, accountPassword, nowDate);
-		System.out.println(accountService.save(newAccount));
 		System.out.println("finish");
+		return accountService.save(newAccount);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void PostRegister() {
-
+	public Account PostRegister(@RequestBody Account account) {
+		System.out.println("AccountRegister");
+		facultyService.findAll();
+		String personId = account.getPerson().getPersonId(); 
+		String accounttypeName = account.getAccounttype().getAccounttypeName();
+		String personGender = account.getPerson().getPersonGender();
+		String personNameFirst = account.getPerson().getPersonNameFirst();
+		String personNameLast = account.getPerson().getPersonNameLast();
+		Date personBirthdate = account.getPerson().getPersonBirthdate();
+		String majorName = account.getPerson().getMajor().getMajorName();
+		String accountUsername = account.getAccountUsername();
+		String accountPassword = account.getAccountPassword();
+		Major major = majorService.findByMajorName(majorName);
+		Accounttype accounttype = accounttypeService.findByAccounttypeName(accounttypeName);
+		Date nowDate = Calendar.getInstance().getTime();
+		Person newPerson = personService
+				.save(new Person(personId, major, personGender, personNameFirst, personNameLast, personBirthdate, nowDate));
+		Account newAccount = new Account(accounttype, newPerson, accountUsername, accountPassword, nowDate);
+		System.out.println("finish");
+		return accountService.save(newAccount);
 	}
 
 }
