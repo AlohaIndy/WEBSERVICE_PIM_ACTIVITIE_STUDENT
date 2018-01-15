@@ -63,17 +63,19 @@ public class ResgisterController {
 		Date nowDate = Calendar.getInstance().getTime();
 		System.out.println("AccountRegister"+personId);
 		List<Person> checkPersons=personService.findByPersonIdGetList(personId);
-		if (checkPersons.isEmpty()) {
-			facultyService.findAll();
-			Major major = majorService.findByMajorName(majorName);
-			Accounttype accounttype = accounttypeService.findByAccounttypeName(accounttypeName);
-			Person newPerson = personService
-					.save(new Person(personId, major, personGender, personNameFirst, personNameLast, personBirthdate, nowDate));
-			Account newAccount = new Account(accounttype, newPerson, accountUsername, accountPassword, nowDate);
-			return new ResponseEntity<Account>(accountService.save(newAccount),HttpStatus.OK);	
+		List<Account> checkAccount=accountService.findByAccountIdGetList(accountUsername);
+		if (!(checkPersons.isEmpty())) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}else if (!(checkAccount.isEmpty())) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
-		
-		return new ResponseEntity<>(HttpStatus.CONFLICT);
+		facultyService.findAll();
+		Major major = majorService.findByMajorName(majorName);
+		Accounttype accounttype = accounttypeService.findByAccounttypeName(accounttypeName);
+		Person newPerson = personService
+				.save(new Person(personId, major, personGender, personNameFirst, personNameLast, personBirthdate, nowDate));
+		Account newAccount = new Account(accounttype, newPerson, accountUsername, accountPassword, nowDate);
+		return new ResponseEntity<Account>(accountService.save(newAccount),HttpStatus.OK);	
 	}
 
 }

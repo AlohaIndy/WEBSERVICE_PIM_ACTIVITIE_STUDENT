@@ -1,5 +1,7 @@
 package PIM.WEBSERIVE.ACTIVITIE.STUDENT.SERVICE;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,10 @@ public class AccountService {
 
 	public Account save(Account newAccount) {
 		return accountRepository.save(newAccount);
+	}
+	
+	public List<Account> findByAccountIdGetList(String accountUsername){
+		return accountRepository.findByAccountIdGetList(accountUsername);
 	}
 	
 }
